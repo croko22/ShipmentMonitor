@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShipmentMonitor</string>
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="hint_email">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="keep_session">Mantener sesión activa</string>
+    <string name="forgot_password">¿Has olvidado tu contraseña?</string>
+    <string name="forgot_title">Restablecer Contraseña</string>
+    <string name="forgot_instruction">Ingresa tu usuario y te enviaremos un correo electrónico para restablecer tu contraseña.</string>
+    <string name="hint_user">Usuario</string>
+    <string name="btn_send">Enviar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="map_title">Monitorea tu Envío</string>
+    <string name="tab_map">Mapa</string>
+    <string name="tab_billings">Billings</string>
+    <string name="tab_profile">Perfil</string>
+    <string name="tab_notifications">Notificaciones</string>
+    <string name="notifications_title">Notificaciones</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="error_login">No está autorizado a ingresar a la aplicación</string>
+    <string name="error_network">Error de conexión. Verifica tu acceso a internet.</string>
+    <string name="error_generic">Ocurrió un error. Intenta de nuevo.</string>
+    <string name="forgot_success">La solicitud de restablecimiento de contraseña fue enviada con éxito.</string>
+    <string name="purchase_label">Compra: %s</string>
+</resources>
