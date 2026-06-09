@@ -1,7 +1,9 @@
 package com.kevinchambi.shipmentmonitor
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.kevinchambi.shipmentmonitor.databinding.ActivityMainBinding
@@ -24,23 +26,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-            as androidx.navigation.fragment.NavHostFragment
+            as NavHostFragment
         val navController = navHostFragment.findNavController()
-
-        // If user is already logged in, navigate straight to map
-        if (sessionManager.isLoggedIn()) {
-            navController.navigate(R.id.action_loginFragment_to_mapFragment)
-        }
 
         binding.bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.loginFragment, R.id.forgotPasswordFragment -> {
-                    binding.bottomNavigationView.visibility = android.view.View.GONE
+                    binding.bottomNavigationView.visibility = View.GONE
                 }
                 else -> {
-                    binding.bottomNavigationView.visibility = android.view.View.VISIBLE
+                    binding.bottomNavigationView.visibility = View.VISIBLE
                 }
             }
         }

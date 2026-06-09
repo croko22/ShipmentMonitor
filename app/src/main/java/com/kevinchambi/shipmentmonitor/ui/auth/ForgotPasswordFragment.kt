@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.kevinchambi.shipmentmonitor.R
 import com.kevinchambi.shipmentmonitor.databinding.FragmentForgotPasswordBinding
 
@@ -30,8 +31,15 @@ class ForgotPasswordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
-        setupObservers()
+        setupTextWatchers()
         setupClickListeners()
+        setupObservers()
+    }
+
+    private fun setupTextWatchers() {
+        binding.etUser.addTextChangedListener {
+            binding.tilUser.error = null
+        }
     }
 
     private fun setupClickListeners() {
@@ -55,24 +63,26 @@ class ForgotPasswordFragment : Fragment() {
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.btnSend.isEnabled = !isLoading
             binding.btnCancel.isEnabled = !isLoading
+            binding.etUser.isEnabled = !isLoading
         }
 
         viewModel.forgotResult.observe(viewLifecycleOwner) { result ->
             result?.let {
                 if (it.isSuccess) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.forgot_success),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    val message = it.getOrNull() ?: getString(R.string.forgot_success)
+                    showSnackbar(message)
                     findNavController().navigateUp()
                 } else {
-                    val error = it.exceptionOrNull()?.message ?: getString(R.string.error_generic)
-                    Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
+                    val errorMessage = it.exceptionOrNull()?.message ?: getString(R.string.error_generic)
+                    showSnackbar(errorMessage)
                 }
                 viewModel.clearForgotResult()
             }
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

@@ -14,8 +14,8 @@ class AuthViewModel : ViewModel() {
     private val _loginResult = MutableLiveData<Result<LoginData>?>()
     val loginResult: LiveData<Result<LoginData>?> = _loginResult
 
-    private val _forgotResult = MutableLiveData<Result<Unit>?>()
-    val forgotResult: LiveData<Result<Unit>?> = _forgotResult
+    private val _forgotResult = MutableLiveData<Result<String>?>()
+    val forgotResult: LiveData<Result<String>?> = _forgotResult
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -24,7 +24,7 @@ class AuthViewModel : ViewModel() {
         _isLoading.value = true
         viewModelScope.launch {
             val result = authRepository.login(email, password)
-            _loginResult.value = result.map { it.data ?: throw Exception("No data") }
+            _loginResult.value = result
             _isLoading.value = false
         }
     }
@@ -33,7 +33,7 @@ class AuthViewModel : ViewModel() {
         _isLoading.value = true
         viewModelScope.launch {
             val result = authRepository.forgotPassword(email)
-            _forgotResult.value = result.map { }
+            _forgotResult.value = result
             _isLoading.value = false
         }
     }

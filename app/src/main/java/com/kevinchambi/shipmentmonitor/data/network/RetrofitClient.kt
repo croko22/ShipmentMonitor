@@ -1,6 +1,5 @@
 package com.kevinchambi.shipmentmonitor.data.network
 
-import com.kevinchambi.shipmentmonitor.data.network.AuthInterceptor
 import com.kevinchambi.shipmentmonitor.utils.SessionManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

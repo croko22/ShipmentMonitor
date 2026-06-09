@@ -26,8 +26,7 @@ class NotificationsViewModel : ViewModel() {
             val result = notificationRepository.getNotifications()
             _isLoading.value = false
             if (result.isSuccess) {
-                val data = result.getOrNull()?.data
-                _notifications.value = data ?: emptyList()
+                _notifications.value = result.getOrNull() ?: emptyList()
                 _error.value = null
             } else {
                 _error.value = result.exceptionOrNull()?.message

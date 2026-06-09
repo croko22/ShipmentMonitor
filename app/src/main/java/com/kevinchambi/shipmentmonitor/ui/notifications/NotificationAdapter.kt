@@ -3,6 +3,7 @@ package com.kevinchambi.shipmentmonitor.ui.notifications
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kevinchambi.shipmentmonitor.R
 import com.kevinchambi.shipmentmonitor.data.model.Notification
 import com.kevinchambi.shipmentmonitor.databinding.ItemNotificationBinding
 
@@ -32,16 +33,16 @@ class NotificationAdapter(
 
             when (notification.status) {
                 "En Origen" -> tvStatus.setTextColor(
-                    holder.itemView.context.getColor(com.kevinchambi.shipmentmonitor.R.color.primary_blue)
+                    holder.itemView.context.getColor(R.color.primary_blue)
                 )
                 "En Tránsito" -> tvStatus.setTextColor(
-                    holder.itemView.context.getColor(com.kevinchambi.shipmentmonitor.R.color.primary_cyan)
+                    holder.itemView.context.getColor(R.color.primary_cyan)
                 )
                 "En Domicilio" -> tvStatus.setTextColor(
-                    holder.itemView.context.getColor(com.kevinchambi.shipmentmonitor.R.color.primary_purple)
+                    holder.itemView.context.getColor(R.color.primary_purple)
                 )
                 "Entregado" -> tvStatus.setTextColor(
-                    holder.itemView.context.getColor(com.kevinchambi.shipmentmonitor.R.color.primary_blue)
+                    holder.itemView.context.getColor(R.color.primary_blue)
                 )
             }
 

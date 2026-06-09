@@ -26,8 +26,7 @@ class MapViewModel : ViewModel() {
             val result = vehicleRepository.getVehicles()
             _isLoading.value = false
             if (result.isSuccess) {
-                val data = result.getOrNull()?.data
-                _vehicles.value = data ?: emptyList()
+                _vehicles.value = result.getOrNull() ?: emptyList()
                 _error.value = null
             } else {
                 _error.value = result.exceptionOrNull()?.message

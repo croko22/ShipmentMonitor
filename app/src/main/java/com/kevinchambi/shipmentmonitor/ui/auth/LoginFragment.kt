@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.kevinchambi.shipmentmonitor.R
 import com.kevinchambi.shipmentmonitor.databinding.FragmentLoginBinding
 import com.kevinchambi.shipmentmonitor.utils.SessionManager
@@ -38,8 +39,18 @@ class LoginFragment : Fragment() {
             return
         }
 
-        setupObservers()
+        setupTextWatchers()
         setupClickListeners()
+        setupObservers()
+    }
+
+    private fun setupTextWatchers() {
+        binding.etEmail.addTextChangedListener {
+            binding.tilEmail.error = null
+        }
+        binding.etPassword.addTextChangedListener {
+            binding.tilPassword.error = null
+        }
     }
 
     private fun setupClickListeners() {
@@ -47,7 +58,7 @@ class LoginFragment : Fragment() {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            if (validateInputs(email, password)) {
+            if (validateForm(email, password)) {
                 viewModel.login(email, password)
             }
         }
@@ -57,45 +68,55 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun validateInputs(email: String, password: String): Boolean {
+    private fun validateForm(email: String, password: String): Boolean {
+        var isValid = true
+
         if (email.isEmpty()) {
             binding.tilEmail.error = "Ingresa tu usuario"
-            return false
+            isValid = false
+        } else {
+            binding.tilEmail.error = null
         }
-        binding.tilEmail.error = null
 
         if (password.isEmpty()) {
             binding.tilPassword.error = "Ingresa tu contraseña"
-            return false
+            isValid = false
+        } else {
+            binding.tilPassword.error = null
         }
-        binding.tilPassword.error = null
 
-        return true
+        return isValid
     }
 
     private fun setupObservers() {
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.btnLogin.isEnabled = !isLoading
+            binding.etEmail.isEnabled = !isLoading
+            binding.etPassword.isEnabled = !isLoading
         }
 
         viewModel.loginResult.observe(viewLifecycleOwner) { result ->
             result?.let {
                 if (it.isSuccess) {
                     val loginData = it.getOrNull()
-                    loginData?.let { data ->
-                        sessionManager.saveToken(data.token_value, data.token_expired)
+                    if (loginData != null) {
+                        sessionManager.saveToken(loginData.token_value, loginData.token_expired)
                         sessionManager.setKeepSession(binding.cbKeepSession.isChecked)
                         sessionManager.saveEmail(binding.etEmail.text.toString().trim())
                         navigateToMap()
                     }
                 } else {
-                    val error = it.exceptionOrNull()?.message ?: getString(R.string.error_generic)
-                    Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show()
+                    val errorMessage = it.exceptionOrNull()?.message ?: getString(R.string.error_generic)
+                    showSnackbar(errorMessage)
                 }
                 viewModel.clearLoginResult()
             }
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun navigateToMap() {
